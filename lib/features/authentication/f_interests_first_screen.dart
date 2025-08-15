@@ -90,61 +90,58 @@ class _InterestsFirstScreenState extends State<InterestsFirstScreen> {
           child: TtitleLarge("Choose your interests"),
         ),
       ),
-      body: Scrollbar(
-        controller: _scrollController,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(Sizes.d24, 0, Sizes.d24, Sizes.d24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TtitleLarge(
-                  "What do you want to see on Twitter?",
-                  fontSize: Sizes.d36,
-                  maxLines: 3,
-                ),
-                Gaps.v20,
-                Opacity(
-                  opacity: 0.5,
-                  child: TbodyLarge(
-                    "Select at least 3 interests to personalize your Twitter experience. They will be visible on your profile.",
-                    maxLines: 5,
-                  ),
-                ),
-                Gaps.v64,
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Wrap(
-                    runSpacing: Sizes.d10,
-                    spacing: Sizes.d10,
-                    children: [
-                      for (var interest in interests)
-                        FractionallySizedBox(
-                          widthFactor: 0.47,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: Sizes.d10,
-                              vertical: Sizes.d10,
-                            ),
-                            height: Sizes.d80,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey.shade300,
-                                width: Sizes.d2,
-                              ),
-                              borderRadius: BorderRadius.circular(Sizes.d10),
-                            ),
-                            alignment: Alignment.bottomLeft,
-                            child: TtitleSmall(interest, maxLines: 3),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
+      body: Padding(
+        padding: EdgeInsets.fromLTRB(Sizes.d24, 0, Sizes.d24, Sizes.d24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TtitleLarge(
+              "What do you want to see on Twitter?",
+              fontSize: Sizes.d36,
+              maxLines: 3,
             ),
-          ),
+            Gaps.v20,
+            Opacity(
+              opacity: 0.5,
+              child: TbodyLarge(
+                "Select at least 3 interests to personalize your Twitter experience. They will be visible on your profile.",
+                maxLines: 5,
+              ),
+            ),
+            Gaps.v64,
+            Expanded(
+              child: GridView.builder(
+                controller: _scrollController,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: Sizes.d10,
+                  mainAxisSpacing: Sizes.d10,
+                  childAspectRatio: 2,
+                ),
+                itemCount: interests.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: _onInterestTap,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Sizes.d10,
+                        vertical: Sizes.d10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                          width: Sizes.d2,
+                        ),
+                        borderRadius: BorderRadius.circular(Sizes.d10),
+                      ),
+                      alignment: Alignment.bottomLeft,
+                      child: TtitleSmall(interests[index], maxLines: 3),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
