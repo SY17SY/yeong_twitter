@@ -1,0 +1,132 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:yeong_twitter/constants/gaps.dart';
+import 'package:yeong_twitter/constants/sizes.dart';
+import 'package:yeong_twitter/constants/text.dart';
+import 'package:yeong_twitter/features/authentication/a_whats_happening_screen.dart';
+import 'package:yeong_twitter/features/authentication/b_sign_up_screen.dart';
+import 'package:yeong_twitter/features/authentication/widgets/form_button.dart';
+import 'package:yeong_twitter/features/authentication/widgets/link_text.dart';
+
+class CustomizeScreen extends StatefulWidget {
+  final Map<String, String> userData;
+  const CustomizeScreen({super.key, required this.userData});
+
+  @override
+  State<CustomizeScreen> createState() => _CustomizeScreenState();
+}
+
+class _CustomizeScreenState extends State<CustomizeScreen> {
+  bool _customize = false;
+
+  void _onCustomizeChanged(bool? newValue) {
+    if (newValue == null) return;
+    setState(() {
+      _customize = newValue;
+    });
+  }
+
+  void _onLinkTextTap() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WhatsHappeningScreen()),
+    );
+  }
+
+  void _onNextTap() {
+    if (!_customize) return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) =>
+                SignUpScreen(userData: widget.userData, customize: true),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: FaIcon(FontAwesomeIcons.twitter)),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: Sizes.d24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Gaps.v20,
+            TtitleLarge(
+              "Customize your experience",
+              fontSize: Sizes.d28,
+              maxLines: 2,
+            ),
+            Gaps.v36,
+            TtitleLarge(
+              "Track where you see Twitter content across the web",
+              fontSize: Sizes.d24,
+              maxLines: 2,
+            ),
+            Gaps.v20,
+            SwitchListTile.adaptive(
+              value: _customize,
+              onChanged: _onCustomizeChanged,
+              title: TbodyLarge(
+                "Twitter uses this data to personalize your experience. This web browsing history will never be stored with your name, email, or phone number.",
+                maxLines: 10,
+              ),
+              contentPadding: EdgeInsets.zero,
+            ),
+            Gaps.v32,
+            LinkText(
+              items: [
+                LinkTextItem(text: "By signing up, you agree to our "),
+                LinkTextItem(
+                  text: "Terms",
+                  isLinked: true,
+                  onTap: _onLinkTextTap,
+                ),
+                LinkTextItem(text: ", "),
+                LinkTextItem(
+                  text: "Privacy Policy",
+                  isLinked: true,
+                  onTap: _onLinkTextTap,
+                ),
+                LinkTextItem(text: ", and "),
+                LinkTextItem(
+                  text: "Cookie use",
+                  isLinked: true,
+                  onTap: _onLinkTextTap,
+                ),
+                LinkTextItem(text: ". "),
+                LinkTextItem(
+                  text:
+                      "Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy. ",
+                ),
+                LinkTextItem(
+                  text: "Learn more",
+                  isLinked: true,
+                  onTap: _onLinkTextTap,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        elevation: 0,
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(
+          horizontal: Sizes.d40,
+          vertical: Sizes.d10,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: FormButton(disabled: !_customize, onTap: _onNextTap),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
