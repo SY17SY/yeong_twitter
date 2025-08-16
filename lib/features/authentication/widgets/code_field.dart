@@ -20,6 +20,27 @@ class CodeField extends StatefulWidget {
 }
 
 class _CodeFieldState extends State<CodeField> {
+  void _onTextChanged(String value, int index) {
+    if (value.length > 1) {
+      var chars = value.split('');
+      int i = index;
+      for (var char in chars) {
+        if (i >= widget.codeControllers.length) break;
+        widget.codeControllers[i].text = char;
+        i++;
+      }
+
+      if (i < widget.codeControllers.length) {
+        FocusScope.of(context).requestFocus(widget.focusNodes[i - 1]);
+      } else {
+        FocusScope.of(context).unfocus();
+      }
+    } else if (value.isEmpty && index > 0) {
+      FocusScope.of(context).requestFocus(widget.focusNodes[index - 1]);
+    }
+    widget.checkCodeComplete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -30,60 +51,33 @@ class _CodeFieldState extends State<CodeField> {
         children: List.generate(
           6,
           (index) => Expanded(
-            child: CallbackShortcuts(
-              bindings: {
-                const SingleActivator(LogicalKeyboardKey.backspace): () {
-                  if (widget.codeControllers[index].text.isEmpty && index > 0) {
-                    widget.codeControllers[index - 1].clear();
-                    FocusScope.of(
-                      context,
-                    ).requestFocus(widget.focusNodes[index - 1]);
-                    widget.checkCodeComplete();
-                  }
-                },
-                const SingleActivator(LogicalKeyboardKey.delete): () {
-                  if (widget.codeControllers[index].text.isEmpty && index > 0) {
-                    widget.codeControllers[index - 1].clear();
-                    FocusScope.of(
-                      context,
-                    ).requestFocus(widget.focusNodes[index - 1]);
-                    widget.checkCodeComplete();
-                  }
-                },
-              },
-              child: TextField(
-                controller: widget.codeControllers[index],
-                focusNode: widget.focusNodes[index],
-                onTap: widget.onTextFieldTap,
-                maxLength: 1,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                textAlign: TextAlign.center,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleLarge!.copyWith(fontSize: Sizes.d24),
-                decoration: InputDecoration(
-                  counterText: "",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.grey.shade400,
-                      width: Sizes.d2,
-                    ),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black,
-                      width: Sizes.d2,
-                    ),
+            child: TextField(
+              controller: widget.codeControllers[index],
+              focusNode: widget.focusNodes[index],
+              ignorePointers: true,
+              maxLength: 6,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              textAlign: TextAlign.center,
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge!.copyWith(fontSize: Sizes.d24),
+              decoration: InputDecoration(
+                counterText: "",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade400,
+                    width: Sizes.d2,
                   ),
                 ),
-                onChanged: (value) {
-                  widget.checkCodeComplete();
-                  if (value.isNotEmpty && index < 5) {
-                    FocusScope.of(context).nextFocus();
-                  }
-                },
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.grey.shade400,
+                    width: Sizes.d2,
+                  ),
+                ),
               ),
+              onChanged: (value) => _onTextChanged(value, index),
             ),
           ),
         ),

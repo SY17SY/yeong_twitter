@@ -37,8 +37,8 @@ class _EmailCodeScreenState extends State<EmailCodeScreen> {
     final firstEmptyIndex = _codeControllers.indexWhere(
       (c) => c.text.trim().isEmpty,
     );
-    final targetIndex =
-        (firstEmptyIndex == -1) ? _focusNodes.length - 1 : firstEmptyIndex;
+    int targetIndex = (firstEmptyIndex == 0) ? 0 : firstEmptyIndex - 1;
+    if (firstEmptyIndex == -1) targetIndex = 5;
     FocusScope.of(context).requestFocus(_focusNodes[targetIndex]);
   }
 

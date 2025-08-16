@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yeong_twitter/constants/sizes.dart';
 import 'package:yeong_twitter/features/authentication/a_whats_happening_screen.dart';
 import 'package:yeong_twitter/features/authentication/b_sign_up_screen.dart';
+import 'package:yeong_twitter/features/authentication/d_email_code_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: WhatsHappeningScreen(),
+      home:
+      // WhatsHappeningScreen(),
       // SignUpScreen(
       //   userData: {
       //     "name": "Yeong",
@@ -22,6 +24,13 @@ class MyApp extends StatelessWidget {
       //   },
       //   customize: true,
       // ),
+      EmailCodeScreen(
+        userData: {
+          "name": "Yeong",
+          "email": "yeong@naver.com",
+          "birthday": "2003-02-28",
+        },
+      ),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,
