@@ -13,16 +13,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home:
-      // WhatsHappeningScreen(),
-      SignUpScreen(
-        userData: {
-          "name": "Yeong",
-          "email": "yeong@naver.com",
-          "birthday": "2003.02.28",
-        },
-        customize: true,
-      ),
+      home: WhatsHappeningScreen(),
+      // SignUpScreen(
+      //   userData: {
+      //     "name": "Yeong",
+      //     "email": "yeong@naver.com",
+      //     "birthday": "2003-02-28",
+      //   },
+      //   customize: true,
+      // ),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,

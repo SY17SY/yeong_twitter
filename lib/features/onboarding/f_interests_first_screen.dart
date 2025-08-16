@@ -97,18 +97,7 @@ class _InterestsFirstScreenState extends State<InterestsFirstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          child:
-              _showTitle
-                  ? TtitleLarge(
-                    "Choose your interests",
-                    color: Theme.of(context).primaryColor,
-                  )
-                  : FaIcon(FontAwesomeIcons.twitter),
-        ),
-      ),
+      appBar: _buildAppBar(context),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: Sizes.d24),
@@ -117,113 +106,135 @@ class _InterestsFirstScreenState extends State<InterestsFirstScreen> {
             child: NestedScrollView(
               key: nestedScrollViewKey,
               headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Gaps.v20,
-                        TtitleLarge(
-                          "What do you want to see on Twitter?",
-                          fontSize: Sizes.d36,
-                          maxLines: 3,
-                        ),
-                        Gaps.v20,
-                        Opacity(
-                          opacity: 0.5,
-                          child: TbodyLarge(
-                            "Select at least 3 interests to personalize your Twitter experience. They will be visible on your profile.",
-                            maxLines: 5,
-                          ),
-                        ),
-                        Gaps.v20,
-                      ],
-                    ),
-                  ),
-                ];
+                return [_buildHeader()];
               },
-              body: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: Sizes.d10,
-                  mainAxisSpacing: Sizes.d10,
-                  childAspectRatio: 2,
-                ),
-                padding: EdgeInsets.zero,
-                itemCount: interests.length,
-                itemBuilder: (context, index) {
-                  bool isSelected = _selectedIndexes.contains(index);
-                  return GestureDetector(
-                    onTap: () => _onInterestTap(index),
-                    child: Stack(
-                      children: [
-                        AnimatedContainer(
-                          duration: Duration(milliseconds: 200),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: Sizes.d10,
-                            vertical: Sizes.d10,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                isSelected
-                                    ? Theme.of(context).primaryColor
-                                    : null,
-                            border: Border.all(
-                              color:
-                                  isSelected
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.grey.shade300,
-                              width: Sizes.d2,
-                            ),
-                            borderRadius: BorderRadius.circular(Sizes.d10),
-                          ),
-                          alignment: Alignment.bottomLeft,
-                          child: AnimatedDefaultTextStyle(
-                            style: Theme.of(
-                              context,
-                            ).textTheme.titleSmall!.copyWith(
-                              color: isSelected ? Colors.white : Colors.black,
-                            ),
-                            duration: Duration(milliseconds: 200),
-                            child: Text(interests[index]),
-                          ),
-                        ),
-                        if (isSelected)
-                          Positioned(
-                            top: Sizes.d12,
-                            right: Sizes.d12,
-                            child: FaIcon(
-                              FontAwesomeIcons.solidCircleCheck,
-                              color: Colors.white,
-                              size: Sizes.d20,
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+              body: _buildInterestSection(),
             ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 0,
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(
-          horizontal: Sizes.d32,
-          vertical: Sizes.d10,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Opacity(opacity: 0.7, child: TbodySmall(_showItemLength())),
-            NextButton(
-              disabled: _selectedIndexes.length < 3,
-              onTap: _onNextTap,
+      bottomNavigationBar: _buildBottomSection(),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        child:
+            _showTitle
+                ? TtitleLarge(
+                  "Choose your interests",
+                  color: Theme.of(context).primaryColor,
+                )
+                : FaIcon(FontAwesomeIcons.twitter),
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _buildHeader() {
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Gaps.v20,
+          TtitleLarge(
+            "What do you want to see on Twitter?",
+            fontSize: Sizes.d36,
+            maxLines: 3,
+          ),
+          Gaps.v20,
+          Opacity(
+            opacity: 0.5,
+            child: TbodyLarge(
+              "Select at least 3 interests to personalize your Twitter experience. They will be visible on your profile.",
+              maxLines: 5,
             ),
-          ],
-        ),
+          ),
+          Gaps.v20,
+        ],
+      ),
+    );
+  }
+
+  GridView _buildInterestSection() {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: Sizes.d10,
+        mainAxisSpacing: Sizes.d10,
+        childAspectRatio: 2,
+      ),
+      padding: EdgeInsets.zero,
+      itemCount: interests.length,
+      itemBuilder: (context, index) {
+        bool isSelected = _selectedIndexes.contains(index);
+        return _buildInterestItem(index, isSelected, context);
+      },
+    );
+  }
+
+  GestureDetector _buildInterestItem(
+    int index,
+    bool isSelected,
+    BuildContext context,
+  ) {
+    return GestureDetector(
+      onTap: () => _onInterestTap(index),
+      child: Stack(
+        children: [
+          AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            padding: EdgeInsets.symmetric(
+              horizontal: Sizes.d10,
+              vertical: Sizes.d10,
+            ),
+            decoration: BoxDecoration(
+              color: isSelected ? Theme.of(context).primaryColor : null,
+              border: Border.all(
+                color:
+                    isSelected
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey.shade300,
+                width: Sizes.d2,
+              ),
+              borderRadius: BorderRadius.circular(Sizes.d10),
+            ),
+            alignment: Alignment.bottomLeft,
+            child: AnimatedDefaultTextStyle(
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                color: isSelected ? Colors.white : Colors.black,
+              ),
+              duration: Duration(milliseconds: 200),
+              child: Text(interests[index]),
+            ),
+          ),
+          if (isSelected)
+            Positioned(
+              top: Sizes.d12,
+              right: Sizes.d12,
+              child: FaIcon(
+                FontAwesomeIcons.solidCircleCheck,
+                color: Colors.white,
+                size: Sizes.d20,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  BottomAppBar _buildBottomSection() {
+    return BottomAppBar(
+      elevation: 0,
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: Sizes.d32, vertical: Sizes.d10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Opacity(opacity: 0.7, child: TbodySmall(_showItemLength())),
+          NextButton(disabled: _selectedIndexes.length < 3, onTap: _onNextTap),
+        ],
       ),
     );
   }

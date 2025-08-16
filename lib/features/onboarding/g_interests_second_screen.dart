@@ -765,18 +765,7 @@ class _InterestsSecondScreenState extends State<InterestsSecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: AnimatedSwitcher(
-          duration: Duration(milliseconds: 300),
-          child:
-              _showTitle
-                  ? TtitleLarge(
-                    "Choose your interests",
-                    color: Theme.of(context).primaryColor,
-                  )
-                  : FaIcon(FontAwesomeIcons.twitter),
-        ),
-      ),
+      appBar: _buildAppBar(context),
       body: SafeArea(
         child: Scrollbar(
           controller: _scrollController,
@@ -785,112 +774,140 @@ class _InterestsSecondScreenState extends State<InterestsSecondScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Sizes.d24),
-                  child: Column(
-                    children: [
-                      Gaps.v20,
-                      TtitleLarge(
-                        "What do you want to see on Twitter?",
-                        fontSize: Sizes.d36,
-                        maxLines: 3,
-                      ),
-                      Gaps.v20,
-                      Opacity(
-                        opacity: 0.5,
-                        child: TbodyLarge(
-                          "Interests are used to personalize your experience and will be visible on your profile.",
-                          maxLines: 5,
-                        ),
-                      ),
-                      Gaps.v20,
-                      Divider(color: Colors.grey.shade400, thickness: 0.5),
-                    ],
-                  ),
-                ),
-                for (var index in widget.selectedIndexes) ...[
-                  Gaps.v20,
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Sizes.d20),
-                    child: TtitleLarge(interests[index]),
-                  ),
-                  Gaps.v28,
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(horizontal: Sizes.d20),
-                    child: SizedBox(
-                      width: Sizes.d100 * 20,
-                      child: Wrap(
-                        spacing: Sizes.d10,
-                        runSpacing: Sizes.d10,
-                        children: [
-                          for (var detail in interestDetails[index]) ...[
-                            GestureDetector(
-                              onTap: () => _onDetailTap(index, detail),
-                              child: AnimatedContainer(
-                                duration: Duration(milliseconds: 200),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: Sizes.d20,
-                                  vertical: Sizes.d16,
-                                ),
-                                decoration: BoxDecoration(
-                                  color:
-                                      _isSelected(index, detail)
-                                          ? Theme.of(context).primaryColor
-                                          : null,
-                                  borderRadius: BorderRadius.circular(
-                                    Sizes.d32,
-                                  ),
-                                  border: Border.all(
-                                    color:
-                                        _isSelected(index, detail)
-                                            ? Theme.of(context).primaryColor
-                                            : Colors.grey.shade300,
-                                  ),
-                                ),
-                                child: AnimatedDefaultTextStyle(
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.titleSmall!.copyWith(
-                                    color:
-                                        _isSelected(index, detail)
-                                            ? Colors.white
-                                            : Colors.black,
-                                  ),
-                                  duration: Duration(milliseconds: 200),
-                                  child: Text(detail),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gaps.v20,
-                  Divider(
-                    color: Colors.grey.shade400,
-                    thickness: 0.5,
-                    indent: Sizes.d16,
-                    endIndent: Sizes.d16,
-                  ),
-                ],
+                _buildHeader(),
+                for (var index in widget.selectedIndexes)
+                  _buildInterestDetailSection(index, context),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        color: Colors.white,
+      bottomNavigationBar: _buildBottomSection(),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: AnimatedSwitcher(
+        duration: Duration(milliseconds: 300),
+        child:
+            _showTitle
+                ? TtitleLarge(
+                  "Choose your interests",
+                  color: Theme.of(context).primaryColor,
+                )
+                : FaIcon(FontAwesomeIcons.twitter),
+      ),
+    );
+  }
+
+  Padding _buildHeader() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: Sizes.d24),
+      child: Column(
+        children: [
+          Gaps.v20,
+          TtitleLarge(
+            "What do you want to see on Twitter?",
+            fontSize: Sizes.d36,
+            maxLines: 3,
+          ),
+          Gaps.v20,
+          Opacity(
+            opacity: 0.5,
+            child: TbodyLarge(
+              "Interests are used to personalize your experience and will be visible on your profile.",
+              maxLines: 5,
+            ),
+          ),
+          Gaps.v20,
+          Divider(color: Colors.grey.shade400, thickness: 0.5),
+        ],
+      ),
+    );
+  }
+
+  Column _buildInterestDetailSection(int index, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Gaps.v20,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Sizes.d20),
+          child: TtitleLarge(interests[index]),
+        ),
+        Gaps.v28,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: Sizes.d20),
+          child: SizedBox(
+            width: Sizes.d100 * 20,
+            child: Wrap(
+              spacing: Sizes.d10,
+              runSpacing: Sizes.d10,
+              children: [
+                for (var detail in interestDetails[index])
+                  _buildInterestDetailItem(index, detail, context),
+              ],
+            ),
+          ),
+        ),
+        Gaps.v20,
+        Divider(
+          color: Colors.grey.shade400,
+          thickness: 0.5,
+          indent: Sizes.d16,
+          endIndent: Sizes.d16,
+        ),
+      ],
+    );
+  }
+
+  GestureDetector _buildInterestDetailItem(
+    int index,
+    String detail,
+    BuildContext context,
+  ) {
+    return GestureDetector(
+      onTap: () => _onDetailTap(index, detail),
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(
-          horizontal: Sizes.d32,
-          vertical: Sizes.d10,
+          horizontal: Sizes.d20,
+          vertical: Sizes.d16,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [NextButton(disabled: _itemLength < 3, onTap: _onNextTap)],
+        decoration: BoxDecoration(
+          color:
+              _isSelected(index, detail)
+                  ? Theme.of(context).primaryColor
+                  : null,
+          borderRadius: BorderRadius.circular(Sizes.d32),
+          border: Border.all(
+            color:
+                _isSelected(index, detail)
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey.shade300,
+          ),
         ),
+        child: AnimatedDefaultTextStyle(
+          style: Theme.of(context).textTheme.titleSmall!.copyWith(
+            color: _isSelected(index, detail) ? Colors.white : Colors.black,
+          ),
+          duration: Duration(milliseconds: 200),
+          child: Text(detail),
+        ),
+      ),
+    );
+  }
+
+  BottomAppBar _buildBottomSection() {
+    return BottomAppBar(
+      elevation: 1,
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: Sizes.d32, vertical: Sizes.d10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [NextButton(disabled: _itemLength < 3, onTap: _onNextTap)],
       ),
     );
   }

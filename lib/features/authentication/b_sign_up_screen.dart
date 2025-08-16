@@ -165,172 +165,178 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TtitleLarge("Create your account", fontSize: Sizes.d28),
                   Gaps.v36,
                   if (_isNameValid()) TbodyMedium("Name"),
-                  TextField(
-                    controller: _nameController,
-                    autocorrect: false,
-                    cursorColor: Theme.of(context).primaryColor,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Name",
-                      suffix:
-                          _isNameValid()
-                              ? FaIcon(
-                                FontAwesomeIcons.solidCircleCheck,
-                                size: Sizes.d20,
-                                color: _greenColor,
-                              )
-                              : null,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                    ),
-                  ),
+                  _buildNameField(context),
                   Gaps.v32,
                   if (_email.isNotEmpty) TbodyMedium("Email"),
-                  TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    cursorColor: Theme.of(context).primaryColor,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Email",
-                      errorText: _isEmailValid(),
-                      suffix:
-                          _email.isNotEmpty && _isEmailValid() == null
-                              ? FaIcon(
-                                FontAwesomeIcons.solidCircleCheck,
-                                size: Sizes.d20,
-                                color: _greenColor,
-                              )
-                              : null,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                    ),
-                  ),
+                  _buildEmailField(context),
                   Gaps.v32,
                   if (_birthday.isNotEmpty) TbodyMedium("Date of birth"),
-                  TextField(
-                    onTap: _onBirthdayTap,
-                    controller: _birthdayController,
-                    readOnly: true,
-                    showCursor: false,
-                    cursorColor: Theme.of(context).primaryColor,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Date of birth",
-                      suffix:
-                          _isNameValid()
-                              ? FaIcon(
-                                FontAwesomeIcons.solidCircleCheck,
-                                size: Sizes.d20,
-                                color: _greenColor,
-                              )
-                              : null,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                    ),
-                  ),
+                  _buildBirthdayField(context),
                   Gaps.v10,
-                  if (!widget.customize)
-                    Opacity(
-                      opacity: 0.5,
-                      child: TbodyMedium(
-                        "This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or something else.",
-                        maxLines: 3,
-                      ),
-                    ),
-                  if (widget.customize)
-                    LinkText(
-                      items: [
-                        LinkTextItem(text: "By signing up, you agree to our "),
-                        LinkTextItem(
-                          text: "Terms",
-                          isLinked: true,
-                          onTap: _onLinkTextTap,
-                        ),
-                        LinkTextItem(text: ", "),
-                        LinkTextItem(
-                          text: "Privacy Policy",
-                          isLinked: true,
-                          onTap: _onLinkTextTap,
-                        ),
-                        LinkTextItem(text: ", and "),
-                        LinkTextItem(
-                          text: "Cookie use",
-                          isLinked: true,
-                          onTap: _onLinkTextTap,
-                        ),
-                        LinkTextItem(text: ". "),
-                        LinkTextItem(
-                          text:
-                              "Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy. ",
-                        ),
-                        LinkTextItem(
-                          text: "Learn more",
-                          isLinked: true,
-                          onTap: _onLinkTextTap,
-                        ),
-                        LinkTextItem(
-                          text:
-                              "Others will be able to find you by email or phone number, when provided, unless you choose otherwise ",
-                        ),
-                        LinkTextItem(
-                          text: "here",
-                          isLinked: true,
-                          onTap: _onLinkTextTap,
-                        ),
-                        LinkTextItem(text: ". "),
-                      ],
-                    ),
+                  if (!widget.customize) _buildNotLinkText(),
+                  if (widget.customize) _buildLinkText(),
                 ],
               ),
             ),
-            Positioned(
-              bottom: 0,
-              width: MediaQuery.of(context).size.width,
-              child:
-                  widget.customize
-                      ? ExpandedBottomField(
-                        onTap: _onSignUpTap,
-                        customize: widget.customize,
-                      )
-                      : BottomAppBar(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            FormButton(
-                              disabled:
-                                  !_isNameValid() ||
-                                  _email.isEmpty ||
-                                  _isEmailValid() != null ||
-                                  _birthday.isEmpty,
-                              onTap: _onNextTap,
-                            ),
-                          ],
-                        ),
-                      ),
-            ),
+            _buildBottomSection(context),
           ],
         ),
       ),
+    );
+  }
+
+  TextField _buildNameField(BuildContext context) {
+    return TextField(
+      controller: _nameController,
+      autocorrect: false,
+      cursorColor: Theme.of(context).primaryColor,
+      style: Theme.of(
+        context,
+      ).textTheme.bodyLarge!.copyWith(color: Theme.of(context).primaryColor),
+      decoration: InputDecoration(
+        hintText: "Name",
+        suffix:
+            _isNameValid()
+                ? FaIcon(
+                  FontAwesomeIcons.solidCircleCheck,
+                  size: Sizes.d20,
+                  color: _greenColor,
+                )
+                : null,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+      ),
+    );
+  }
+
+  TextField _buildEmailField(BuildContext context) {
+    return TextField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      autocorrect: false,
+      cursorColor: Theme.of(context).primaryColor,
+      style: Theme.of(
+        context,
+      ).textTheme.bodyLarge!.copyWith(color: Theme.of(context).primaryColor),
+      decoration: InputDecoration(
+        hintText: "Email",
+        errorText: _isEmailValid(),
+        suffix:
+            _email.isNotEmpty && _isEmailValid() == null
+                ? FaIcon(
+                  FontAwesomeIcons.solidCircleCheck,
+                  size: Sizes.d20,
+                  color: _greenColor,
+                )
+                : null,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+      ),
+    );
+  }
+
+  TextField _buildBirthdayField(BuildContext context) {
+    return TextField(
+      onTap: _onBirthdayTap,
+      controller: _birthdayController,
+      readOnly: true,
+      showCursor: false,
+      cursorColor: Theme.of(context).primaryColor,
+      style: Theme.of(
+        context,
+      ).textTheme.bodyLarge!.copyWith(color: Theme.of(context).primaryColor),
+      decoration: InputDecoration(
+        hintText: "Date of birth",
+        suffix:
+            _isNameValid()
+                ? FaIcon(
+                  FontAwesomeIcons.solidCircleCheck,
+                  size: Sizes.d20,
+                  color: _greenColor,
+                )
+                : null,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+      ),
+    );
+  }
+
+  Opacity _buildNotLinkText() {
+    return Opacity(
+      opacity: 0.5,
+      child: TbodyMedium(
+        "This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or something else.",
+        maxLines: 3,
+      ),
+    );
+  }
+
+  LinkText _buildLinkText() {
+    return LinkText(
+      items: [
+        LinkTextItem(text: "By signing up, you agree to our "),
+        LinkTextItem(text: "Terms", isLinked: true, onTap: _onLinkTextTap),
+        LinkTextItem(text: ", "),
+        LinkTextItem(
+          text: "Privacy Policy",
+          isLinked: true,
+          onTap: _onLinkTextTap,
+        ),
+        LinkTextItem(text: ", and "),
+        LinkTextItem(text: "Cookie use", isLinked: true, onTap: _onLinkTextTap),
+        LinkTextItem(text: ". "),
+        LinkTextItem(
+          text:
+              "Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy. ",
+        ),
+        LinkTextItem(text: "Learn more", isLinked: true, onTap: _onLinkTextTap),
+        LinkTextItem(
+          text:
+              "Others will be able to find you by email or phone number, when provided, unless you choose otherwise ",
+        ),
+        LinkTextItem(text: "here", isLinked: true, onTap: _onLinkTextTap),
+        LinkTextItem(text: ". "),
+      ],
+    );
+  }
+
+  Positioned _buildBottomSection(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      width: MediaQuery.of(context).size.width,
+      child:
+          widget.customize
+              ? ExpandedBottomField(
+                onTap: _onSignUpTap,
+                customize: widget.customize,
+              )
+              : BottomAppBar(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FormButton(
+                      disabled:
+                          !_isNameValid() ||
+                          _email.isEmpty ||
+                          _isEmailValid() != null ||
+                          _birthday.isEmpty,
+                      onTap: _onNextTap,
+                    ),
+                  ],
+                ),
+              ),
     );
   }
 }

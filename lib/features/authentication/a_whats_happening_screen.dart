@@ -34,105 +34,109 @@ class WhatsHappeningScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: Sizes.d40),
         child: Column(
           children: [
-            Flexible(
-              flex: 3,
-              fit: FlexFit.tight,
-              child: Center(
-                child: Text(
-                  "See what's happening\nin the world right now.",
-                  style: TextStyle(
-                    fontSize: Sizes.d28,
-                    fontWeight: FontWeight.w900,
-                  ),
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 5,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AuthButton(
-                    image: "google.png",
-                    text: "Continue with Google",
-                    mode: Mode.light,
-                  ),
-                  Gaps.v10,
-                  AuthButton(
-                    image: "apple.png",
-                    text: "Continue with Apple",
-                    mode: Mode.light,
-                  ),
-                  Gaps.v20,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.shade600,
-                          thickness: 0.5,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: Sizes.d10),
-                        child: TlabelSmall("or", color: Colors.grey.shade700),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey.shade600,
-                          thickness: 0.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gaps.v8,
-                  GestureDetector(
-                    onTap: () => onSignUpTap(context),
-                    child: AuthButton(text: "Create account", mode: Mode.dark),
-                  ),
-                  Gaps.v28,
-                  LinkText(
-                    items: [
-                      LinkTextItem(text: "By signing up, you agree to our "),
-                      LinkTextItem(
-                        text: "Terms",
-                        isLinked: true,
-                        onTap: () => _onLinkTextTap(context),
-                      ),
-                      LinkTextItem(text: ", "),
-                      LinkTextItem(
-                        text: "Privacy Policy",
-                        isLinked: true,
-                        onTap: () => _onLinkTextTap(context),
-                      ),
-                      LinkTextItem(text: ", and "),
-                      LinkTextItem(
-                        text: "Cookie use",
-                        isLinked: true,
-                        onTap: () => _onLinkTextTap(context),
-                      ),
-                      LinkTextItem(text: "."),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: Row(
-                children: [
-                  TbodyMedium(
-                    "Have an account already?",
-                    color: Colors.grey.shade700,
-                  ),
-                  Gaps.h4,
-                  TbodyMedium("Log in", color: Theme.of(context).primaryColor),
-                ],
-              ),
-            ),
+            _buildHeader(),
+            _buildSignUpSection(context),
+            _buildLoginSection(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Flexible _buildHeader() {
+    return Flexible(
+      flex: 3,
+      fit: FlexFit.tight,
+      child: Center(
+        child: Text(
+          "See what's happening\nin the world right now.",
+          style: TextStyle(fontSize: Sizes.d28, fontWeight: FontWeight.w900),
+          maxLines: 2,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  Flexible _buildSignUpSection(BuildContext context) {
+    return Flexible(
+      flex: 5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AuthButton(
+            image: "google.png",
+            text: "Continue with Google",
+            mode: Mode.light,
+          ),
+          Gaps.v10,
+          AuthButton(
+            image: "apple.png",
+            text: "Continue with Apple",
+            mode: Mode.light,
+          ),
+          Gaps.v20,
+          _buildDivider(),
+          Gaps.v8,
+          GestureDetector(
+            onTap: () => onSignUpTap(context),
+            child: AuthButton(text: "Create account", mode: Mode.dark),
+          ),
+          Gaps.v28,
+          _buildLinkText(context),
+        ],
+      ),
+    );
+  }
+
+  Row _buildDivider() {
+    return Row(
+      children: [
+        Expanded(child: Divider(color: Colors.grey.shade600, thickness: 0.5)),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Sizes.d10),
+          child: TlabelSmall("or", color: Colors.grey.shade700),
+        ),
+        Expanded(child: Divider(color: Colors.grey.shade600, thickness: 0.5)),
+      ],
+    );
+  }
+
+  LinkText _buildLinkText(BuildContext context) {
+    return LinkText(
+      items: [
+        LinkTextItem(text: "By signing up, you agree to our "),
+        LinkTextItem(
+          text: "Terms",
+          isLinked: true,
+          onTap: () => _onLinkTextTap(context),
+        ),
+        LinkTextItem(text: ", "),
+        LinkTextItem(
+          text: "Privacy Policy",
+          isLinked: true,
+          onTap: () => _onLinkTextTap(context),
+        ),
+        LinkTextItem(text: ", and "),
+        LinkTextItem(
+          text: "Cookie use",
+          isLinked: true,
+          onTap: () => _onLinkTextTap(context),
+        ),
+        LinkTextItem(text: "."),
+      ],
+    );
+  }
+
+  Flexible _buildLoginSection(BuildContext context) {
+    return Flexible(
+      flex: 1,
+      child: Row(
+        children: [
+          TbodyMedium("Have an account already?", color: Colors.grey.shade700),
+          Gaps.h4,
+          TbodyMedium("Log in", color: Theme.of(context).primaryColor),
+        ],
       ),
     );
   }

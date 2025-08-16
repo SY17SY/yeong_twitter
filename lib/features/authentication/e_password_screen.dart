@@ -83,81 +83,89 @@ class _PasswordScreenState extends State<PasswordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Gaps.v20,
-                  TtitleLarge("You'll need a password", fontSize: Sizes.d28),
-                  Gaps.v20,
-                  Opacity(
-                    opacity: 0.5,
-                    child: TbodyLarge(
-                      "Make sure it's 8 characters or more.",
-                      maxLines: 3,
-                    ),
-                  ),
-                  Gaps.v32,
+                  _buildHeader(),
                   if (_password.isNotEmpty) TbodyMedium("Password"),
-                  TextField(
-                    controller: _passwordController,
-                    onEditingComplete: _onNextTap,
-                    autocorrect: false,
-                    obscureText: _obscureText,
-                    cursorColor: Theme.of(context).primaryColor,
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      errorText: _isPasswordValid(),
-                      suffix: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          GestureDetector(
-                            onTap: _toggleObscure,
-                            child: FaIcon(
-                              _obscureText
-                                  ? FontAwesomeIcons.eye
-                                  : FontAwesomeIcons.eyeSlash,
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                          Gaps.h16,
-                          if (_validatedLength) ...[
-                            FaIcon(
-                              FontAwesomeIcons.solidCircleCheck,
-                              color: Colors.green,
-                            ),
-                            Gaps.h8,
-                          ],
-                        ],
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                    ),
-                  ),
+                  _buildPasswordField(context),
                 ],
               ),
             ),
-            Positioned(
-              bottom: 0,
-              width: MediaQuery.of(context).size.width,
-              child: BottomAppBar(
-                elevation: 0,
-                color: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: Sizes.d24,
-                  vertical: Sizes.d18,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: FormButton(
-                        disabled: !_validatedLength,
-                        onTap: _onNextTap,
-                      ),
-                    ),
-                  ],
-                ),
+            _buildBottomSection(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Column _buildHeader() {
+    return Column(
+      children: [
+        Gaps.v20,
+        TtitleLarge("You'll need a password", fontSize: Sizes.d28),
+        Gaps.v20,
+        Opacity(
+          opacity: 0.5,
+          child: TbodyLarge(
+            "Make sure it's 8 characters or more.",
+            maxLines: 3,
+          ),
+        ),
+        Gaps.v32,
+      ],
+    );
+  }
+
+  TextField _buildPasswordField(BuildContext context) {
+    return TextField(
+      controller: _passwordController,
+      onEditingComplete: _onNextTap,
+      autocorrect: false,
+      obscureText: _obscureText,
+      cursorColor: Theme.of(context).primaryColor,
+      decoration: InputDecoration(
+        hintText: "Password",
+        errorText: _isPasswordValid(),
+        suffix: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onTap: _toggleObscure,
+              child: FaIcon(
+                _obscureText ? FontAwesomeIcons.eye : FontAwesomeIcons.eyeSlash,
+                color: Colors.grey.shade400,
               ),
+            ),
+            Gaps.h16,
+            if (_validatedLength) ...[
+              FaIcon(FontAwesomeIcons.solidCircleCheck, color: Colors.green),
+              Gaps.h8,
+            ],
+          ],
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+      ),
+    );
+  }
+
+  Positioned _buildBottomSection(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      width: MediaQuery.of(context).size.width,
+      child: BottomAppBar(
+        elevation: 0,
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(
+          horizontal: Sizes.d24,
+          vertical: Sizes.d18,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: FormButton(disabled: !_validatedLength, onTap: _onNextTap),
             ),
           ],
         ),

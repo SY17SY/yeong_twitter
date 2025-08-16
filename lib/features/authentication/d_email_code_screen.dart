@@ -88,46 +88,66 @@ class _EmailCodeScreenState extends State<EmailCodeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Gaps.v20,
-                  TtitleLarge("We sent you a code", fontSize: Sizes.d28),
-                  Gaps.v20,
-                  Opacity(
-                    opacity: 0.5,
-                    child: TbodyLarge(
-                      "Enter it below to verify ${widget.userData["email"]}",
-                      maxLines: 3,
-                    ),
-                  ),
+                  _buildHeader(),
                   Gaps.v40,
-                  CodeField(
-                    codeControllers: _codeControllers,
-                    focusNodes: _focusNodes,
-                    onTextFieldTap: _onTextFieldTap,
-                    checkCodeComplete: _checkCodeComplete,
-                  ),
-                  Gaps.v20,
-                  if (_codeValid)
-                    Align(
-                      alignment: Alignment.center,
-                      child: FaIcon(
-                        FontAwesomeIcons.solidCircleCheck,
-                        size: Sizes.d32,
-                        color: Colors.green,
-                      ),
-                    ),
+                  _buildCodeSection(),
                 ],
               ),
             ),
-            Positioned(
-              bottom: 0,
-              width: MediaQuery.of(context).size.width,
-              child: ExpandedBottomField(
-                textButtonTitle: "Didn't receive email?",
-                disabled: !_codeValid,
-                onTap: _onNextTap,
-              ),
-            ),
+            _buildBottomSection(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Column _buildHeader() {
+    return Column(
+      children: [
+        TtitleLarge("We sent you a code", fontSize: Sizes.d28),
+        Gaps.v20,
+        Opacity(
+          opacity: 0.5,
+          child: TbodyLarge(
+            "Enter it below to verify ${widget.userData["email"]}",
+            maxLines: 3,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Column _buildCodeSection() {
+    return Column(
+      children: [
+        CodeField(
+          codeControllers: _codeControllers,
+          focusNodes: _focusNodes,
+          onTextFieldTap: _onTextFieldTap,
+          checkCodeComplete: _checkCodeComplete,
+        ),
+        Gaps.v20,
+        if (_codeValid)
+          Align(
+            alignment: Alignment.center,
+            child: FaIcon(
+              FontAwesomeIcons.solidCircleCheck,
+              size: Sizes.d32,
+              color: Colors.green,
+            ),
+          ),
+      ],
+    );
+  }
+
+  Positioned _buildBottomSection(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      width: MediaQuery.of(context).size.width,
+      child: ExpandedBottomField(
+        textButtonTitle: "Didn't receive email?",
+        disabled: !_codeValid,
+        onTap: _onNextTap,
       ),
     );
   }
