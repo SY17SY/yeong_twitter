@@ -5,6 +5,7 @@ import 'package:yeong_twitter/constants/gaps.dart';
 import 'package:yeong_twitter/constants/sizes.dart';
 import 'package:yeong_twitter/constants/text.dart';
 import 'package:yeong_twitter/features/authentication/e_password_screen.dart';
+import 'package:yeong_twitter/features/authentication/widgets/code_field.dart';
 import 'package:yeong_twitter/features/authentication/widgets/form_button.dart';
 
 class EmailCodeScreen extends StatefulWidget {
@@ -98,49 +99,11 @@ class _EmailCodeScreenState extends State<EmailCodeScreen> {
                     ),
                   ),
                   Gaps.v40,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    spacing: Sizes.d8,
-                    children: List.generate(
-                      6,
-                      (index) => Expanded(
-                        child: TextField(
-                          controller: _codeControllers[index],
-                          focusNode: _focusNodes[index],
-                          onTap: _onTextFieldTap,
-                          maxLength: 1,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          textAlign: TextAlign.center,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleLarge!.copyWith(fontSize: Sizes.d24),
-                          decoration: InputDecoration(
-                            counterText: "",
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey.shade400,
-                                width: Sizes.d2,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black,
-                                width: Sizes.d2,
-                              ),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            _checkCodeComplete();
-                            if (value.isNotEmpty && index < 5) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                        ),
-                      ),
-                    ),
+                  CodeField(
+                    codeControllers: _codeControllers,
+                    focusNodes: _focusNodes,
+                    onTextFieldTap: _onTextFieldTap,
+                    checkCodeComplete: _checkCodeComplete,
                   ),
                   Gaps.v20,
                   if (_codeValid)

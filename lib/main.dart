@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yeong_twitter/constants/sizes.dart';
 import 'package:yeong_twitter/features/authentication/a_whats_happening_screen.dart';
-import 'package:yeong_twitter/features/authentication/d_email_code_screen.dart';
-import 'package:yeong_twitter/features/authentication/e_password_screen.dart';
-import 'package:yeong_twitter/features/authentication/f_interests_first_screen.dart';
+import 'package:yeong_twitter/features/authentication/b_sign_up_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: InterestsFirstScreen(),
+      home: SignUpScreen(
+        userData: {
+          "name": "Yeong",
+          "email": "yeong@naver.com",
+          "birthday": "2003.02.28",
+        },
+        customize: true,
+      ),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,

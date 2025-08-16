@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:yeong_twitter/constants/sizes.dart';
 
-class FormButton extends StatelessWidget {
+class NextButton extends StatelessWidget {
   final String? title;
-  final bool customize;
   final bool disabled;
   final VoidCallback onTap;
 
-  const FormButton({
+  const NextButton({
     super.key,
     this.title = "Next",
-    this.customize = false,
     required this.disabled,
     required this.onTap,
   });
@@ -26,12 +24,7 @@ class FormButton extends StatelessWidget {
           horizontal: Sizes.d24,
         ),
         decoration: BoxDecoration(
-          color:
-              disabled
-                  ? Colors.grey.shade500
-                  : customize
-                  ? Theme.of(context).primaryColor
-                  : Colors.black,
+          color: disabled ? Colors.grey.shade500 : Colors.black,
           borderRadius: BorderRadius.circular(Sizes.d32),
         ),
         child: AnimatedDefaultTextStyle(
@@ -40,7 +33,7 @@ class FormButton extends StatelessWidget {
           ),
           duration: Duration(milliseconds: 200),
           textAlign: TextAlign.center,
-          child: Text(customize ? "Sign up" : title!),
+          child: Text(title!),
         ),
       ),
     );

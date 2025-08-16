@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yeong_twitter/constants/gaps.dart';
 import 'package:yeong_twitter/constants/sizes.dart';
 import 'package:yeong_twitter/constants/text.dart';
-import 'package:yeong_twitter/features/authentication/f_interests_first_screen.dart';
+import 'package:yeong_twitter/features/onboarding/f_interests_first_screen.dart';
 import 'package:yeong_twitter/features/authentication/widgets/form_button.dart';
 
 class PasswordScreen extends StatefulWidget {
