@@ -13,7 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SignUpScreen(
+      home:
+      // WhatsHappeningScreen(),
+      SignUpScreen(
         userData: {
           "name": "Yeong",
           "email": "yeong@naver.com",
@@ -32,6 +34,14 @@ class MyApp extends StatelessWidget {
           foregroundColor: Color(0xFF6196E3),
           elevation: 0,
           centerTitle: true,
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          elevation: 0,
+          color: Colors.white,
+          padding: EdgeInsets.symmetric(
+            horizontal: Sizes.d32,
+            vertical: Sizes.d10,
+          ),
         ),
         textTheme: const TextTheme(
           titleLarge: TextStyle(

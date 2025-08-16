@@ -789,7 +789,7 @@ class _InterestsSecondScreenState extends State<InterestsSecondScreen> {
                   padding: EdgeInsets.symmetric(horizontal: Sizes.d24),
                   child: Column(
                     children: [
-                      Gaps.v16,
+                      Gaps.v20,
                       TtitleLarge(
                         "What do you want to see on Twitter?",
                         fontSize: Sizes.d36,

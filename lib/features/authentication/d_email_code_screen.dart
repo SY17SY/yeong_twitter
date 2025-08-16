@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yeong_twitter/constants/gaps.dart';
 import 'package:yeong_twitter/constants/sizes.dart';
 import 'package:yeong_twitter/constants/text.dart';
 import 'package:yeong_twitter/features/authentication/e_password_screen.dart';
 import 'package:yeong_twitter/features/authentication/widgets/code_field.dart';
-import 'package:yeong_twitter/features/authentication/widgets/form_button.dart';
+import 'package:yeong_twitter/features/authentication/widgets/expanded_bottom_field.dart';
 
 class EmailCodeScreen extends StatefulWidget {
   final Map<String, String> userData;
@@ -121,33 +120,10 @@ class _EmailCodeScreenState extends State<EmailCodeScreen> {
             Positioned(
               bottom: 0,
               width: MediaQuery.of(context).size.width,
-              child: BottomAppBar(
-                elevation: 0,
-                color: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: Sizes.d24,
-                  vertical: Sizes.d10,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("Didn't receive email?"),
-                    ),
-                    Gaps.v4,
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FormButton(
-                            disabled: !_codeValid,
-                            onTap: _onNextTap,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              child: ExpandedBottomField(
+                textButtonTitle: "Didn't receive email?",
+                disabled: !_codeValid,
+                onTap: _onNextTap,
               ),
             ),
           ],

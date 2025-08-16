@@ -122,7 +122,7 @@ class _InterestsFirstScreenState extends State<InterestsFirstScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Gaps.v16,
+                        Gaps.v20,
                         TtitleLarge(
                           "What do you want to see on Twitter?",
                           fontSize: Sizes.d36,

@@ -5,7 +5,7 @@ import 'package:yeong_twitter/constants/sizes.dart';
 import 'package:yeong_twitter/constants/text.dart';
 import 'package:yeong_twitter/features/authentication/a_whats_happening_screen.dart';
 import 'package:yeong_twitter/features/authentication/b_sign_up_screen.dart';
-import 'package:yeong_twitter/features/authentication/widgets/form_button.dart';
+import 'package:yeong_twitter/features/authentication/widgets/expanded_bottom_field.dart';
 import 'package:yeong_twitter/features/authentication/widgets/link_text.dart';
 
 class CustomizeScreen extends StatefulWidget {
@@ -112,20 +112,9 @@ class _CustomizeScreenState extends State<CustomizeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        elevation: 0,
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(
-          horizontal: Sizes.d40,
-          vertical: Sizes.d10,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: FormButton(disabled: !_customize, onTap: _onNextTap),
-            ),
-          ],
-        ),
+      bottomNavigationBar: ExpandedBottomField(
+        disabled: !_customize,
+        onTap: _onNextTap,
       ),
     );
   }

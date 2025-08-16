@@ -7,6 +7,7 @@ import 'package:yeong_twitter/constants/text.dart';
 import 'package:yeong_twitter/features/authentication/a_whats_happening_screen.dart';
 import 'package:yeong_twitter/features/authentication/c_customize_screen.dart';
 import 'package:yeong_twitter/features/authentication/d_email_code_screen.dart';
+import 'package:yeong_twitter/features/authentication/widgets/expanded_bottom_field.dart';
 import 'package:yeong_twitter/features/authentication/widgets/form_button.dart';
 import 'package:yeong_twitter/features/authentication/widgets/link_text.dart';
 
@@ -305,35 +306,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Positioned(
               bottom: 0,
               width: MediaQuery.of(context).size.width,
-              child: BottomAppBar(
-                elevation: 0,
-                color: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: Sizes.d40,
-                  vertical: Sizes.d10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    widget.customize
-                        ? Expanded(
-                          child: FormButton(
-                            customize: widget.customize,
-                            disabled: false,
-                            onTap: _onSignUpTap,
-                          ),
-                        )
-                        : FormButton(
-                          disabled:
-                              !_isNameValid() ||
-                              _email.isEmpty ||
-                              _isEmailValid() != null ||
-                              _birthday.isEmpty,
-                          onTap: _onNextTap,
+              child:
+                  widget.customize
+                      ? ExpandedBottomField(
+                        onTap: _onSignUpTap,
+                        customize: widget.customize,
+                      )
+                      : BottomAppBar(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            FormButton(
+                              disabled:
+                                  !_isNameValid() ||
+                                  _email.isEmpty ||
+                                  _isEmailValid() != null ||
+                                  _birthday.isEmpty,
+                              onTap: _onNextTap,
+                            ),
+                          ],
                         ),
-                  ],
-                ),
-              ),
+                      ),
             ),
           ],
         ),
