@@ -3,30 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:yeong_twitter/constants/gaps.dart';
 import 'package:yeong_twitter/constants/sizes.dart';
 import 'package:yeong_twitter/constants/text.dart';
+import 'package:yeong_twitter/constants/interest_details.dart';
 import 'package:yeong_twitter/features/onboarding/g_interests_second_screen.dart';
 import 'package:yeong_twitter/features/onboarding/widgets/next_button.dart';
-
-const interests = [
-  "Fashion & beauty",
-  "Outdoors",
-  "Arts & culture",
-  "Animation & comics",
-  "Business & finance",
-  "Food",
-  "Travel",
-  "Entertainment",
-  "Music",
-  "Gaming",
-  "Family",
-  "Fitness & Health",
-  "Dance",
-  "Home & Garden",
-  "Daily Life",
-  "Comedy",
-  "Animals",
-  "Learning",
-  "Sports",
-];
 
 class InterestsFirstScreen extends StatefulWidget {
   const InterestsFirstScreen({super.key});
